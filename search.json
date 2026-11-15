@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "second_page.html",
+    "href": "second_page.html",
+    "title": "second_page",
+    "section": "",
+    "text": "Code\nx &lt;-rnorm(100)\nplot(x)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Romir Kapoor",
+    "section": "",
+    "text": "I am Romir Kapoor. I am a student at UCLA studying Mathematics/Economics and Statistics/Data Science.\n\n\nCode\n1 + 1\n\n\n[1] 2"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n\nCode\n1 + 1\n\n\n[1] 2"
+  }
+]
