@@ -1,0 +1,10 @@
+---
+title: "second_page"
+format: html
+---
+
+```{r}
+x <-rnorm(100)
+plot(x)
+```
+

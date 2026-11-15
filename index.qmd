@@ -1,0 +1,9 @@
+---
+title: "Romir Kapoor"
+---
+
+I am Romir Kapoor. I am a student at UCLA studying Mathematics/Economics and Statistics/Data Science.
+
+```{r}
+1 + 1
+```
