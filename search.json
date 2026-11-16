@@ -1,23 +1,576 @@
 [
   {
-    "objectID": "second_page.html",
-    "href": "second_page.html",
-    "title": "second_page",
+    "objectID": "notebooks/moodmate/MoodMate.html",
+    "href": "notebooks/moodmate/MoodMate.html",
+    "title": "MoodMate: Six-Class Emotion Classification",
     "section": "",
-    "text": "Code\nx &lt;-rnorm(100)\nplot(x)"
+    "text": "MoodMate is a collaborative NLP and machine learning project exploring the classification of short text into six emotions: sadness, joy, love, anger, fear, and surprise. This notebook compares Logistic Regression, Multinomial Naive Bayes, and Random Forest using TF-IDF features."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Romir Kapoor",
+    "objectID": "notebooks/moodmate/MoodMate.html#exploratory-analysis",
+    "href": "notebooks/moodmate/MoodMate.html#exploratory-analysis",
+    "title": "MoodMate: Six-Class Emotion Classification",
+    "section": "Exploratory analysis",
+    "text": "Exploratory analysis\nExamine the distribution of emotion labels and message lengths in the training split. Numeric labels follow the mapping defined above."
+  },
+  {
+    "objectID": "notebooks/moodmate/MoodMate.html#text-features",
+    "href": "notebooks/moodmate/MoodMate.html#text-features",
+    "title": "MoodMate: Six-Class Emotion Classification",
+    "section": "Text features",
+    "text": "Text features\nTF-IDF represents each message as a sparse vector of weighted terms. The vectorizer is fitted only on training text, then applied unchanged to validation text to avoid vocabulary leakage. English stop-word removal is retained from the original experiment; it can discard useful context, including negations, and was not separately tuned.\n\n\nTraining matrix shape: (16000, 14894)\nValidation matrix shape: (2000, 14894)\nSample vocabulary: ['aa' 'aaaaaaand' 'aaaaand' 'aaaand' 'aac' 'aahhh' 'aaron' 'ab' 'abandon'\n 'abandoned']\n\n\nThe original run produced a 16,000 × 14,894 training matrix and a 2,000 × 14,894 validation matrix. Each row represents a message and each column a term learned from training data."
+  },
+  {
+    "objectID": "notebooks/moodmate/MoodMate.html#logistic-regression",
+    "href": "notebooks/moodmate/MoodMate.html#logistic-regression",
+    "title": "MoodMate: Six-Class Emotion Classification",
+    "section": "Logistic Regression",
+    "text": "Logistic Regression\nTrain a linear classifier on TF-IDF features and report per-class precision, recall, and F1-score on the validation split.\n\n\nAccuracy: 0.8745\nDetailed scores:\n               precision    recall  f1-score   support\n\n           0       0.88      0.94      0.91       550\n           1       0.86      0.95      0.90       704\n           2       0.90      0.70      0.78       178\n           3       0.90      0.85      0.88       275\n           4       0.87      0.74      0.80       212\n           5       0.85      0.65      0.74        81\n\n    accuracy                           0.87      2000\n   macro avg       0.88      0.80      0.83      2000\nweighted avg       0.88      0.87      0.87      2000\n\n\n\nOriginal validation accuracy: 87.45%. The classification report shows lower recall for less frequent classes, especially surprise. Precision measures the correctness of predicted labels, recall measures coverage of true labels, and F1 balances the two."
+  },
+  {
+    "objectID": "notebooks/moodmate/MoodMate.html#multinomial-naive-bayes",
+    "href": "notebooks/moodmate/MoodMate.html#multinomial-naive-bayes",
+    "title": "MoodMate: Six-Class Emotion Classification",
+    "section": "Multinomial Naive Bayes",
+    "text": "Multinomial Naive Bayes\nCompare a probabilistic text-classification baseline using the same TF-IDF features. The original model predicted no validation examples of class 5 (surprise), making its precision mathematically undefined. zero_division=0 explicitly reports this as 0; it does not fix the underlying failure. Inspect class-level recall rather than accuracy alone.\n\n\nNaive Bayes Accuracy: 0.681\nNaive Bayes Detailed Scores:\n               precision    recall  f1-score   support\n\n           0       0.66      0.93      0.77       550\n           1       0.65      0.97      0.78       704\n           2       1.00      0.07      0.13       178\n           3       0.97      0.34      0.50       275\n           4       0.95      0.28      0.44       212\n           5       0.00      0.00      0.00        81\n\n    accuracy                           0.68      2000\n   macro avg       0.71      0.43      0.44      2000\nweighted avg       0.73      0.68      0.61      2000\n\n\n\nOriginal validation accuracy: 68.10%. The original classification report records zero recall for surprise (class 5), and much lower recall for several minority classes. The historical warning messages are omitted because the reporting behavior is now explicit."
+  },
+  {
+    "objectID": "notebooks/moodmate/MoodMate.html#random-forest",
+    "href": "notebooks/moodmate/MoodMate.html#random-forest",
+    "title": "MoodMate: Six-Class Emotion Classification",
+    "section": "Random Forest",
+    "text": "Random Forest\nFit the original 100-tree Random Forest using the same training-only TF-IDF representation.\n\n\nRandom Forest Accuracy: 0.8985\nRandom Forest Detailed Scores:\n               precision    recall  f1-score   support\n\n           0       0.92      0.92      0.92       550\n           1       0.90      0.93      0.91       704\n           2       0.86      0.80      0.83       178\n           3       0.93      0.87      0.90       275\n           4       0.85      0.88      0.87       212\n           5       0.86      0.79      0.83        81\n\n    accuracy                           0.90      2000\n   macro avg       0.89      0.87      0.88      2000\nweighted avg       0.90      0.90      0.90      2000"
+  },
+  {
+    "objectID": "notebooks/moodmate/MoodMate.html#interpretation-and-limitations",
+    "href": "notebooks/moodmate/MoodMate.html#interpretation-and-limitations",
+    "title": "MoodMate: Six-Class Emotion Classification",
+    "section": "Interpretation and limitations",
+    "text": "Interpretation and limitations\nOriginal validation accuracies: Logistic Regression 87.45%, Naive Bayes 68.10%, and Random Forest 89.85%. Random Forest performed best on this validation split. These are historical saved outputs, not fresh verification.\n\nThe label distribution is uneven; accuracy should be considered alongside per-class precision, recall, and F1.\nThe companion randomForest.ipynb explores CountVectorizer and TF-IDF Random Forest variants with a separate held-out test split."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/06_improvements.html",
+    "href": "notebooks/stock-predictor/06_improvements.html",
+    "title": "Stock Return Predictor",
     "section": "",
-    "text": "I am Romir Kapoor. I am a student at UCLA studying Mathematics/Economics and Statistics/Data Science.\n\n\nCode\n1 + 1\n\n\n[1] 2"
+    "text": "Project: Predicting whether a stock will outperform the S&P 500 over the next month\nAuthor: Your Name\nDate: April 2026\n\n\n\nExpand the baseline model from 20 hardcoded stocks to the full S&P 500 universe, extending the history back to 2010. This increases training observations from ~1,500 to 85,000+, significantly improving model reliability.\n\n\n\n\nUniverse: 20 stocks → ~500 S&P 500 constituents\nHistory: 2018–2024 → 2010–2024\nTop picks in backtest: 5 → 10\n\n\n\n\n\nImports & Setup\nPull S&P 500 Tickers\nDownload Price Data\nFeature Engineering\nModeling\nBacktesting\nCompare Results to Baseline"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/06_improvements.html#notebook-6-improvements-expanded-sp-500-universe",
+    "href": "notebooks/stock-predictor/06_improvements.html#notebook-6-improvements-expanded-sp-500-universe",
+    "title": "Stock Return Predictor",
+    "section": "",
+    "text": "Project: Predicting whether a stock will outperform the S&P 500 over the next month\nAuthor: Your Name\nDate: April 2026\n\n\n\nExpand the baseline model from 20 hardcoded stocks to the full S&P 500 universe, extending the history back to 2010. This increases training observations from ~1,500 to 85,000+, significantly improving model reliability.\n\n\n\n\nUniverse: 20 stocks → ~500 S&P 500 constituents\nHistory: 2018–2024 → 2010–2024\nTop picks in backtest: 5 → 10\n\n\n\n\n\nImports & Setup\nPull S&P 500 Tickers\nDownload Price Data\nFeature Engineering\nModeling\nBacktesting\nCompare Results to Baseline"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/06_improvements.html#imports-setup",
+    "href": "notebooks/stock-predictor/06_improvements.html#imports-setup",
+    "title": "Stock Return Predictor",
+    "section": "1. Imports & Setup",
+    "text": "1. Imports & Setup"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/06_improvements.html#pull-sp-500-tickers",
+    "href": "notebooks/stock-predictor/06_improvements.html#pull-sp-500-tickers",
+    "title": "Stock Return Predictor",
+    "section": "2. Pull S&P 500 Tickers",
+    "text": "2. Pull S&P 500 Tickers\nDynamically pull current S&P 500 constituents from Wikipedia."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/06_improvements.html#download-price-data",
+    "href": "notebooks/stock-predictor/06_improvements.html#download-price-data",
+    "title": "Stock Return Predictor",
+    "section": "3. Download Price Data",
+    "text": "3. Download Price Data\nPull daily adjusted closing prices from 2010 onwards."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/06_improvements.html#feature-engineering",
+    "href": "notebooks/stock-predictor/06_improvements.html#feature-engineering",
+    "title": "Stock Return Predictor",
+    "section": "4. Feature Engineering",
+    "text": "4. Feature Engineering\nSame 6 features as baseline — momentum, moving average ratios, volatility. Target variable: did this stock beat SPY next month?"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/06_improvements.html#modeling",
+    "href": "notebooks/stock-predictor/06_improvements.html#modeling",
+    "title": "Stock Return Predictor",
+    "section": "5. Modeling",
+    "text": "5. Modeling\nSame three models as baseline. With 85,000+ rows we expect meaningfully better signal than the baseline’s near-random results."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/06_improvements.html#backtesting",
+    "href": "notebooks/stock-predictor/06_improvements.html#backtesting",
+    "title": "Stock Return Predictor",
+    "section": "6. Backtesting",
+    "text": "6. Backtesting\nRolling window backtest with top 10 picks per month instead of 5."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/06_improvements.html#compare-results-to-baseline",
+    "href": "notebooks/stock-predictor/06_improvements.html#compare-results-to-baseline",
+    "title": "Stock Return Predictor",
+    "section": "7. Compare Results to Baseline",
+    "text": "7. Compare Results to Baseline"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/04_backtesting.html",
+    "href": "notebooks/stock-predictor/04_backtesting.html",
+    "title": "Stock Return Predictor",
+    "section": "",
+    "text": "Project: Predicting whether a stock will outperform the S&P 500 over the next month\nAuthor: Your Name\nDate: April 2026\n\n\n\nSimulate how a trading strategy based on our model’s predictions would have performed historically. We compare our strategy’s returns against simply holding SPY (the S&P 500 ETF) as a benchmark.\n\n\n\n\nImports & Setup\nLoad Data\nBuild Strategy\nCalculate Returns\nPerformance Metrics\nVisualize Results"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/04_backtesting.html#notebook-4-backtesting",
+    "href": "notebooks/stock-predictor/04_backtesting.html#notebook-4-backtesting",
+    "title": "Stock Return Predictor",
+    "section": "",
+    "text": "Project: Predicting whether a stock will outperform the S&P 500 over the next month\nAuthor: Your Name\nDate: April 2026\n\n\n\nSimulate how a trading strategy based on our model’s predictions would have performed historically. We compare our strategy’s returns against simply holding SPY (the S&P 500 ETF) as a benchmark.\n\n\n\n\nImports & Setup\nLoad Data\nBuild Strategy\nCalculate Returns\nPerformance Metrics\nVisualize Results"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/04_backtesting.html#imports-setup",
+    "href": "notebooks/stock-predictor/04_backtesting.html#imports-setup",
+    "title": "Stock Return Predictor",
+    "section": "1. Imports & Setup",
+    "text": "1. Imports & Setup"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/04_backtesting.html#load-data",
+    "href": "notebooks/stock-predictor/04_backtesting.html#load-data",
+    "title": "Stock Return Predictor",
+    "section": "2. Load Data",
+    "text": "2. Load Data\n\n\nFeatures shape: (77, 140)\nPrices shape:   (1760, 20)\n\n\n\n\n[*********************100%***********************]  1 of 1 completed\n\n\n\n\n\n\n\n\nTicker\nSPY\n\n\nDate\n\n\n\n\n\n2018-02-28\n-0.036360\n\n\n2018-03-31\n-0.027411\n\n\n2018-04-30\n0.005168\n\n\n2018-05-31\n0.024310\n\n\n2018-06-30\n0.005751"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/04_backtesting.html#build-strategy",
+    "href": "notebooks/stock-predictor/04_backtesting.html#build-strategy",
+    "title": "Stock Return Predictor",
+    "section": "3. Build Strategy",
+    "text": "3. Build Strategy\nWe use a rolling window approach: - Train on all data up to month T - Predict which stocks will beat SPY in month T+1 - Buy the top 5 predicted stocks equally weighted - Move forward one month and repeat\nThis avoids lookahead bias as we never train on future data.\n\n\nModel dataframe shape: (1540, 8)\n\n\n\n\nMonths with predictions: 52\nSample prediction: (Timestamp('2020-08-31 00:00:00'), &lt;StringArray&gt;\n['AMZN', 'AAPL', 'META', 'MSFT', 'UNH']\nLength: 5, dtype: str)"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/04_backtesting.html#calculate-returns",
+    "href": "notebooks/stock-predictor/04_backtesting.html#calculate-returns",
+    "title": "Stock Return Predictor",
+    "section": "4. Calculate Returns",
+    "text": "4. Calculate Returns\nFor each month, calculate the equal-weighted return of our top 5 picks and compare to SPY.\n\n\nBacktest months: 52\nPortfolio mean monthly return: 0.0261\nSPY mean monthly return:       0.0142"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/04_backtesting.html#performance-metrics",
+    "href": "notebooks/stock-predictor/04_backtesting.html#performance-metrics",
+    "title": "Stock Return Predictor",
+    "section": "5. Performance Metrics",
+    "text": "5. Performance Metrics\n\n\n           Metric Strategy     SPY\n     Total Return  238.45%  96.35%\nAnnualized Return   32.49%  16.85%\n     Sharpe Ratio    1.275   1.035\n     Max Drawdown  -17.73% -23.93%"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/04_backtesting.html#visualize-results",
+    "href": "notebooks/stock-predictor/04_backtesting.html#visualize-results",
+    "title": "Stock Return Predictor",
+    "section": "6. Visualize Results",
+    "text": "6. Visualize Results"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html",
+    "href": "notebooks/stock-predictor/03_modeling.html",
+    "title": "Stock Return Predictor",
+    "section": "",
+    "text": "Project: Predicting whether a stock will outperform the S&P 500 over the next month\nAuthor: Your Name\nDate: April 2026\n\n\n\nTrain and evaluate multiple classification models to predict whether a stock will outperform SPY the following month. We compare Logistic Regression, Ridge Classifier, and XGBoost, evaluating each on accuracy, AUC-ROC, and feature importance.\n\n\n\n\nImports & Setup\nLoad Feature Data\nPrepare Model Inputs\nTrain/Test Split\nLogistic Regression\nRidge Classifier\nXGBoost\nModel Comparison\nFeature Importance"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html#notebook-3-modeling",
+    "href": "notebooks/stock-predictor/03_modeling.html#notebook-3-modeling",
+    "title": "Stock Return Predictor",
+    "section": "",
+    "text": "Project: Predicting whether a stock will outperform the S&P 500 over the next month\nAuthor: Your Name\nDate: April 2026\n\n\n\nTrain and evaluate multiple classification models to predict whether a stock will outperform SPY the following month. We compare Logistic Regression, Ridge Classifier, and XGBoost, evaluating each on accuracy, AUC-ROC, and feature importance.\n\n\n\n\nImports & Setup\nLoad Feature Data\nPrepare Model Inputs\nTrain/Test Split\nLogistic Regression\nRidge Classifier\nXGBoost\nModel Comparison\nFeature Importance"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html#imports-setup",
+    "href": "notebooks/stock-predictor/03_modeling.html#imports-setup",
+    "title": "Stock Return Predictor",
+    "section": "1. Imports & Setup",
+    "text": "1. Imports & Setup"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html#load-feature-data",
+    "href": "notebooks/stock-predictor/03_modeling.html#load-feature-data",
+    "title": "Stock Return Predictor",
+    "section": "2. Load Feature Data",
+    "text": "2. Load Feature Data\n\n\nLoaded features — shape: (77, 140)\n\n\n\n\n\n\n\n\n\nAAPL_ret_1m\nAAPL_ret_3m\nAAPL_ret_6m\nAAPL_ma_ratio_20\nAAPL_ma_ratio_50\nAAPL_volatility\nABT_ret_1m\nABT_ret_3m\nABT_ret_6m\nABT_ma_ratio_20\n...\nJNJ_target\nJPM_target\nMETA_target\nMRK_target\nMSFT_target\nPFE_target\nSLB_target\nUNH_target\nWFC_target\nXOM_target\n\n\ndate\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2018-07-31\n0.016615\n0.081859\n0.145569\n-0.000934\n0.005789\n0.152962\n0.079256\n0.138022\n0.064213\n0.034452\n...\n0\n0\n0\n1\n1\n1\n0\n1\n0\n0\n\n\n2018-08-31\n0.098266\n0.181668\n0.297952\n0.061912\n0.139644\n0.121025\n0.024682\n0.065214\n0.108141\n0.024752\n...\n1\n0\n0\n1\n1\n1\n0\n0\n0\n1\n\n\n2018-09-30\n0.003155\n0.210234\n0.350468\n0.015239\n0.059595\n0.225772\n0.094598\n0.208028\n0.254991\n0.067590\n...\n1\n1\n0\n1\n1\n1\n0\n1\n1\n1\n\n\n2018-10-31\n-0.056923\n0.055953\n0.199339\n-0.003106\n-0.010474\n0.344657\n-0.039097\n0.061221\n0.183769\n-0.000563\n...\n1\n1\n0\n1\n1\n1\n0\n1\n1\n0\n\n\n2018-11-30\n-0.193578\n-0.215260\n-0.069724\n-0.057841\n-0.141543\n0.444800\n0.055595\n0.107949\n0.184970\n0.045225\n...\n0\n0\n1\n1\n1\n1\n0\n0\n0\n0\n\n\n\n\n5 rows × 140 columns"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html#prepare-model-inputs",
+    "href": "notebooks/stock-predictor/03_modeling.html#prepare-model-inputs",
+    "title": "Stock Return Predictor",
+    "section": "3. Prepare Model Inputs",
+    "text": "3. Prepare Model Inputs\nWe stack the data so each row is one stock in one month (long format), with its features as inputs and its target as the label.\n\n\nModel dataframe shape: (1540, 8)\nTarget distribution:\ntarget\n0    817\n1    723\nName: count, dtype: int64\n\n\n\n\n\n\n\n\n\nret_1m\nret_3m\nret_6m\nma_ratio_20\nma_ratio_50\nvolatility\ntarget\nticker\n\n\ndate\n\n\n\n\n\n\n\n\n\n\n\n\n2018-07-31\n0.016615\n0.081859\n0.145569\n-0.000934\n0.005789\n0.152962\n1\nAAPL\n\n\n2018-07-31\n0.035424\n-0.009433\n-0.069145\n0.006792\n-0.003427\n0.168784\n0\nSLB\n\n\n2018-07-31\n0.056515\n0.111771\n0.243956\n0.022337\n0.047725\n0.189843\n0\nCOP\n\n\n2018-07-31\n0.074520\n0.196063\n0.038064\n0.019098\n0.057536\n0.254946\n0\nGOOGL\n\n\n2018-07-31\n0.060694\n0.139341\n0.126621\n0.011538\n0.040931\n0.213713\n1\nMSFT"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html#traintest-split",
+    "href": "notebooks/stock-predictor/03_modeling.html#traintest-split",
+    "title": "Stock Return Predictor",
+    "section": "4. Train/Test Split",
+    "text": "4. Train/Test Split\nWe split by time — never randomly — to avoid data leakage. Training on 80% of dates, testing on the most recent 20%.\n\n\nTrain: up to 2023-08-31\nTest:  2023-08-31 onwards\n\nTrain size: (1220, 6), Test size: (320, 6)"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html#logistic-regression",
+    "href": "notebooks/stock-predictor/03_modeling.html#logistic-regression",
+    "title": "Stock Return Predictor",
+    "section": "5. Logistic Regression",
+    "text": "5. Logistic Regression\nSimple, interpretable baseline model.\n\n\nLogistic Regression — Accuracy: 0.519 | AUC: 0.470\n              precision    recall  f1-score   support\n\n           0       0.53      0.76      0.63       170\n           1       0.47      0.25      0.32       150\n\n    accuracy                           0.52       320\n   macro avg       0.50      0.50      0.48       320\nweighted avg       0.51      0.52      0.48       320"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html#ridge-classifier",
+    "href": "notebooks/stock-predictor/03_modeling.html#ridge-classifier",
+    "title": "Stock Return Predictor",
+    "section": "6. Ridge Classifier",
+    "text": "6. Ridge Classifier\nHandles multicollinearity well — good when features are correlated.\n\n\nRidge Classifier — Accuracy: 0.525\n              precision    recall  f1-score   support\n\n           0       0.54      0.77      0.63       170\n           1       0.49      0.25      0.33       150\n\n    accuracy                           0.53       320\n   macro avg       0.51      0.51      0.48       320\nweighted avg       0.51      0.53      0.49       320"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html#xgboost",
+    "href": "notebooks/stock-predictor/03_modeling.html#xgboost",
+    "title": "Stock Return Predictor",
+    "section": "7. XGBoost",
+    "text": "7. XGBoost\nGradient boosted trees — captures non-linear relationships between features.\n\n\nXGBoost — Accuracy: 0.500 | AUC: 0.493\n              precision    recall  f1-score   support\n\n           0       0.52      0.62      0.57       170\n           1       0.46      0.36      0.40       150\n\n    accuracy                           0.50       320\n   macro avg       0.49      0.49      0.49       320\nweighted avg       0.49      0.50      0.49       320"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html#model-comparison",
+    "href": "notebooks/stock-predictor/03_modeling.html#model-comparison",
+    "title": "Stock Return Predictor",
+    "section": "8. Model Comparison",
+    "text": "8. Model Comparison\n\n\n              Model  Accuracy      AUC\nLogistic Regression   0.51875 0.470196\n   Ridge Classifier   0.52500      NaN\n            XGBoost   0.50000 0.492588"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/03_modeling.html#feature-importance",
+    "href": "notebooks/stock-predictor/03_modeling.html#feature-importance",
+    "title": "Stock Return Predictor",
+    "section": "9. Feature Importance",
+    "text": "9. Feature Importance\nWhich features does XGBoost rely on most?"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About Me",
     "section": "",
-    "text": "About this site\n\n\nCode\n1 + 1\n\n\n[1] 2"
+    "text": "I’m a senior at the University of California, Los Angeles, pursuing degrees in Mathematics/Economics and Statistics & Data Science, with an expected graduation date of June 2027.\nI’m interested in how quantitative analysis can inform business decisions. Whether it’s building a data pipeline, evaluating a machine learning model, or working through a business problem, I enjoy finding ways to turn complex information into practical insights.\nMy experiences have taken me across consulting, data analytics, software engineering, and entrepreneurship, giving me opportunities to approach problems from both technical and business perspectives."
+  },
+  {
+    "objectID": "about.html#background",
+    "href": "about.html#background",
+    "title": "About Me",
+    "section": "",
+    "text": "I’m a senior at the University of California, Los Angeles, pursuing degrees in Mathematics/Economics and Statistics & Data Science, with an expected graduation date of June 2027.\nI’m interested in how quantitative analysis can inform business decisions. Whether it’s building a data pipeline, evaluating a machine learning model, or working through a business problem, I enjoy finding ways to turn complex information into practical insights.\nMy experiences have taken me across consulting, data analytics, software engineering, and entrepreneurship, giving me opportunities to approach problems from both technical and business perspectives."
+  },
+  {
+    "objectID": "about.html#career-timeline",
+    "href": "about.html#career-timeline",
+    "title": "About Me",
+    "section": "Career Timeline",
+    "text": "Career Timeline\n\n\n  \n    \n      Fall 2027\n      Incoming Management Consulting Analyst · Accenture\n      Returning to Accenture's Sourcing & Procurement practice following graduation.\n    \n  \n\n  \n    \n      Jun – Aug 2026\n      Management Consulting Analyst · Accenture\n      Developed a Python/Flask analytics platform and analyzed enterprise transportation data to identify procurement savings opportunities.\n    \n  \n\n  \n    \n      Jun – Sep 2025\n      Data Analyst Intern · Quicklly\n      Built automated reporting and data pipelines to improve operational visibility and support business decisions.\n    \n  \n\n  \n    \n      Jun – Sep 2024\n      Marketing Research & Outreach Analyst · Archway\n      Conducted market research and supported business development initiatives across retail and logistics.\n    \n  \n\n  \n    \n      Dec 2020 – Aug 2024\n      Co-founder · Mirchi Designs\n      Co-founded a marketing business serving local businesses and nonprofits through digital and print campaigns.\n    \n  \n\n  \n    \n      Jun – Aug 2022\n      Software Engineering Intern · Vitu\n      Worked on AI-powered document processing and API integrations for dealership software."
+  },
+  {
+    "objectID": "about.html#leadership-involvement",
+    "href": "about.html#leadership-involvement",
+    "title": "About Me",
+    "section": "Leadership & Involvement",
+    "text": "Leadership & Involvement\nOutside of my professional experience, I’m involved in Bruin Catalyst Consulting, a student-led consulting organization at UCLA that I helped establish.\nAs Founder, President, and Project Lead, I’ve worked on building the organization, recruiting and developing members, and leading consulting engagements for startups and small businesses.\nIt’s been an opportunity to combine my interests in business strategy, analytics, and team leadership while working with other students."
+  },
+  {
+    "objectID": "about.html#skills-tools",
+    "href": "about.html#skills-tools",
+    "title": "About Me",
+    "section": "Skills & Tools",
+    "text": "Skills & Tools\nProgramming Languages\n\n  Python\n  R\n  SQL\n  C++\n  Java\n\n\nData & Development Tools\n\n  pandas / NumPy\n  scikit-learn\n  Tableau\n  Excel\n  Flask\n  Git\n  REST APIs\n  Postman\n\n\nMethods & Techniques\n\n  Regression\n  Classification\n  Predictive Modeling\n  PCA\n  NLP\n  Data Pipelines\n  Statistical Analysis"
+  },
+  {
+    "objectID": "about.html#certifications-recognition",
+    "href": "about.html#certifications-recognition",
+    "title": "About Me",
+    "section": "Certifications & Recognition",
+    "text": "Certifications & Recognition\n\n\n  \n    ✦\n    \n      2025\n      Lean Six Sigma Green Belt\n      USC Marshall School of Business\n    \n  \n\n  \n    ⌘\n    \n      2025\n      Python for Data Science, AI & Development\n      IBM\n    \n  \n\n  \n    ★\n    \n      Academic Recognition\n      Dean's Honors List\n      University of California, Los Angeles\n    \n  \n\n  \n    ★\n    \n      2023\n      Valedictorian\n      Westlake High School"
+  },
+  {
+    "objectID": "about.html#beyond-work-academics",
+    "href": "about.html#beyond-work-academics",
+    "title": "About Me",
+    "section": "Beyond Work & Academics",
+    "text": "Beyond Work & Academics\nI’m particularly interested in the intersection of economics, technology, and business strategy. I enjoy exploring new analytical tools, learning about different industries, and finding practical applications for what I study.\nOutside of school and work, I enjoy staying active through weightlifting, pickleball, and hiking. I’m also a big fan of movies, traveling, and exploring new places.\n\nView My Resume Explore My Projects"
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "A selection of my work in machine learning, data analysis, and quantitative finance.\n\n\n\n\nStock Return Prediction & Options Pricing\nPython · scikit-learn · XGBoost · Quantitative Finance\nDeveloped a machine learning pipeline to predict stock performance relative to the S&P 500, incorporating feature engineering, model comparison, backtesting, and options pricing.\nHighlights: 20 stocks analyzed across four sectors; three classification models evaluated.\n\n\nExplore Project\n\n\n\n\n\n\nMoodMate: Emotion Classification\nPython · NLP · TF-IDF · Random Forest\nCollaborated on an NLP pipeline to classify written text into six emotions using multiple machine learning models and text vectorization techniques.\nHighlights: 89.85% Random Forest validation accuracy across six emotion classes.\n\n\nExplore Project\n\n\n\n\n\n\nDating App User Behavior Analysis\nTableau · Exploratory Data Analysis · Data Visualization\nCollaborated on an analysis of dating app datasets to explore how demographics, lifestyle characteristics, and user preferences relate to engagement and behavior.\nHighlights: Data visualizations and regression analysis across three datasets.\n\n\nExplore Project"
+  },
+  {
+    "objectID": "projects/moodmate.html",
+    "href": "projects/moodmate.html",
+    "title": "MoodMate Emotion Classification",
+    "section": "",
+    "text": "Tools: Python, scikit-learn, pandas, NLTK, TF-IDF\nType: Collaborative Machine Learning Project\nCollaborated on the development of a natural language processing (NLP) pipeline to classify written text into six emotions: sadness, joy, love, anger, fear, and surprise.\n\n\n\nData Preprocessing: Cleaned and prepared text data for machine learning.\nFeature Engineering: Applied text vectorization techniques, including TF-IDF and CountVectorizer.\nModel Development: Trained and compared Logistic Regression, Naive Bayes, and Random Forest classifiers.\nEvaluation: Assessed model performance using accuracy, precision, recall, and F1-score.\n\n\n\n\n\n\n\nModel\nValidation Accuracy\n\n\n\n\nLogistic Regression\n87.45%\n\n\nNaive Bayes\n68.10%\n\n\nRandom Forest\n89.85%\n\n\n\nRandom Forest achieved the highest validation accuracy, demonstrating the effectiveness of ensemble learning for this multiclass text classification task.\n\n\n\nThis project strengthened our experience with natural language processing, text feature extraction, supervised machine learning, and comparative model evaluation.\n\n\n\n\nMoodMate: NLP & Model Comparison\nRandom Forest Experiments"
+  },
+  {
+    "objectID": "projects/moodmate.html#moodmate-emotion-classification-using-nlp",
+    "href": "projects/moodmate.html#moodmate-emotion-classification-using-nlp",
+    "title": "MoodMate Emotion Classification",
+    "section": "",
+    "text": "Tools: Python, scikit-learn, pandas, NLTK, TF-IDF\nType: Collaborative Machine Learning Project\nCollaborated on the development of a natural language processing (NLP) pipeline to classify written text into six emotions: sadness, joy, love, anger, fear, and surprise.\n\n\n\nData Preprocessing: Cleaned and prepared text data for machine learning.\nFeature Engineering: Applied text vectorization techniques, including TF-IDF and CountVectorizer.\nModel Development: Trained and compared Logistic Regression, Naive Bayes, and Random Forest classifiers.\nEvaluation: Assessed model performance using accuracy, precision, recall, and F1-score.\n\n\n\n\n\n\n\nModel\nValidation Accuracy\n\n\n\n\nLogistic Regression\n87.45%\n\n\nNaive Bayes\n68.10%\n\n\nRandom Forest\n89.85%\n\n\n\nRandom Forest achieved the highest validation accuracy, demonstrating the effectiveness of ensemble learning for this multiclass text classification task.\n\n\n\nThis project strengthened our experience with natural language processing, text feature extraction, supervised machine learning, and comparative model evaluation.\n\n\n\n\nMoodMate: NLP & Model Comparison\nRandom Forest Experiments"
+  },
+  {
+    "objectID": "resume.html",
+    "href": "resume.html",
+    "title": "Resume",
+    "section": "",
+    "text": "You can view my resume below or download a PDF copy.\nDownload Resume"
+  },
+  {
+    "objectID": "projects/dating-app.html",
+    "href": "projects/dating-app.html",
+    "title": "Dating App Analysis",
+    "section": "",
+    "text": "Tools: Tableau, Exploratory Data Analysis, Data Visualization\nAnalyzed user behavior and preferences across three dating app datasets: OkCupid, Lovoo, and Kaggle.\nAs part of a collaborative project, explored relationships between user demographics, dating preferences, lifestyle characteristics, and engagement metrics using data visualization and regression analysis.\n\n\nView Full Project Presentation"
+  },
+  {
+    "objectID": "projects/dating-app.html#dating-app-user-behavior-analysis",
+    "href": "projects/dating-app.html#dating-app-user-behavior-analysis",
+    "title": "Dating App Analysis",
+    "section": "",
+    "text": "Tools: Tableau, Exploratory Data Analysis, Data Visualization\nAnalyzed user behavior and preferences across three dating app datasets: OkCupid, Lovoo, and Kaggle.\nAs part of a collaborative project, explored relationships between user demographics, dating preferences, lifestyle characteristics, and engagement metrics using data visualization and regression analysis.\n\n\nView Full Project Presentation"
+  },
+  {
+    "objectID": "projects/stock-predictor.html",
+    "href": "projects/stock-predictor.html",
+    "title": "Stock Return Prediction & Options Pricing",
+    "section": "",
+    "text": "Tools: Python, pandas, scikit-learn, XGBoost, yfinance\nType: Independent Machine Learning & Quantitative Finance Project\nDeveloped an end-to-end machine learning pipeline to predict whether individual stocks would outperform the S&P 500 (SPY) over the following month.\nAnalyzed historical price data from 20 stocks across four sectors between 2018 and 2024.\n\n\n\nFeature Engineering: Created momentum, moving-average, and volatility indicators from historical stock prices.\nMachine Learning: Trained and evaluated Logistic Regression, Ridge Classifier, and XGBoost models using a chronological train-test split.\nBacktesting: Simulated a rolling stock-selection strategy that ranked stocks and selected the top five for an equally weighted portfolio.\nOptions Pricing: Implemented Black-Scholes and Cox-Ross-Rubinstein binomial tree models to estimate theoretical European call option prices.\n\n\n\n\n\n\n\nModel\nTest Accuracy\nAUC\n\n\n\n\nLogistic Regression\n51.9%\n0.470\n\n\nRidge Classifier\n52.5%\n—\n\n\nXGBoost\n50.0%\n0.493\n\n\n\nThe models performed near random classification accuracy, highlighting the difficulty of predicting short-term stock returns using historical price indicators alone.\n\n\n\n\n\n\nMetric\nStrategy\nS&P 500 (SPY)\n\n\n\n\nTotal Return\n238.45%\n96.35%\n\n\nAnnualized Return\n32.49%\n16.85%\n\n\nSharpe Ratio\n1.275\n1.035\n\n\nMaximum Drawdown\n-17.73%\n-23.93%\n\n\n\nBacktest period: 2020–2024. These are exploratory results, not evidence of a reliable trading advantage. The analysis is subject to survivorship bias, a limited stock universe, and omitted transaction costs.\n\n\n\nThis project provided hands-on experience with financial data pipelines, feature engineering, machine learning model evaluation, rolling-window backtesting, and derivatives pricing.\nIt also reinforced the importance of evaluating predictive performance separately from simulated investment returns.\n\n\n\nCurrently exploring an expanded modeling approach using a larger S&P 500 stock universe, additional technical indicators, and comparisons between linear and nonlinear regression models.\n\n\n\nExplore the Python notebooks used to develop this project:\n\nData Collection\nFeature Engineering\nMachine Learning Models\nBacktesting\nOptions Pricing"
+  },
+  {
+    "objectID": "projects/stock-predictor.html#stock-return-prediction-options-pricing",
+    "href": "projects/stock-predictor.html#stock-return-prediction-options-pricing",
+    "title": "Stock Return Prediction & Options Pricing",
+    "section": "",
+    "text": "Tools: Python, pandas, scikit-learn, XGBoost, yfinance\nType: Independent Machine Learning & Quantitative Finance Project\nDeveloped an end-to-end machine learning pipeline to predict whether individual stocks would outperform the S&P 500 (SPY) over the following month.\nAnalyzed historical price data from 20 stocks across four sectors between 2018 and 2024.\n\n\n\nFeature Engineering: Created momentum, moving-average, and volatility indicators from historical stock prices.\nMachine Learning: Trained and evaluated Logistic Regression, Ridge Classifier, and XGBoost models using a chronological train-test split.\nBacktesting: Simulated a rolling stock-selection strategy that ranked stocks and selected the top five for an equally weighted portfolio.\nOptions Pricing: Implemented Black-Scholes and Cox-Ross-Rubinstein binomial tree models to estimate theoretical European call option prices.\n\n\n\n\n\n\n\nModel\nTest Accuracy\nAUC\n\n\n\n\nLogistic Regression\n51.9%\n0.470\n\n\nRidge Classifier\n52.5%\n—\n\n\nXGBoost\n50.0%\n0.493\n\n\n\nThe models performed near random classification accuracy, highlighting the difficulty of predicting short-term stock returns using historical price indicators alone.\n\n\n\n\n\n\nMetric\nStrategy\nS&P 500 (SPY)\n\n\n\n\nTotal Return\n238.45%\n96.35%\n\n\nAnnualized Return\n32.49%\n16.85%\n\n\nSharpe Ratio\n1.275\n1.035\n\n\nMaximum Drawdown\n-17.73%\n-23.93%\n\n\n\nBacktest period: 2020–2024. These are exploratory results, not evidence of a reliable trading advantage. The analysis is subject to survivorship bias, a limited stock universe, and omitted transaction costs.\n\n\n\nThis project provided hands-on experience with financial data pipelines, feature engineering, machine learning model evaluation, rolling-window backtesting, and derivatives pricing.\nIt also reinforced the importance of evaluating predictive performance separately from simulated investment returns.\n\n\n\nCurrently exploring an expanded modeling approach using a larger S&P 500 stock universe, additional technical indicators, and comparisons between linear and nonlinear regression models.\n\n\n\nExplore the Python notebooks used to develop this project:\n\nData Collection\nFeature Engineering\nMachine Learning Models\nBacktesting\nOptions Pricing"
+  },
+  {
+    "objectID": "index.html#areas-of-focus",
+    "href": "index.html#areas-of-focus",
+    "title": "Home",
+    "section": "Areas of Focus",
+    "text": "Areas of Focus\n\n\n01 / ANALYTICS\n\nData Analytics\nStatistical modeling, predictive analytics, and data visualization using R, Python, and SQL.\n\n\n02 / STRATEGY\n\nConsulting\nApplying quantitative analysis and strategic thinking to business and operational challenges.\n\n\n03 / LEADERSHIP\n\nLeadership\nLeading collaborative teams and managing projects through Bruin Catalyst Consulting at UCLA."
+  },
+  {
+    "objectID": "index.html#get-in-touch",
+    "href": "index.html#get-in-touch",
+    "title": "Home",
+    "section": "Get in Touch",
+    "text": "Get in Touch\nI’m always open to connecting about opportunities in consulting, data analytics, and related fields.\nEmail Me"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/02_feature_engineering.html",
+    "href": "notebooks/stock-predictor/02_feature_engineering.html",
+    "title": "Stock Return Predictor",
+    "section": "",
+    "text": "Project: Predicting whether a stock will outperform the S&P 500 over the next month\nAuthor: Romir Kapoor Date: April 2026\n\n\n\nTransform raw price data into meaningful features that capture momentum, trend, volatility, and relative performance. Then construct the target variable — whether a stock beat the S&P 500 the following month.\n\n\n\n\nImports & Setup\nLoad Price Data\nCalculate Monthly Returns\nBuild Features\nBuild Target Variable\nCombine & Clean\nSave to Disk"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/02_feature_engineering.html#notebook-2-feature-engineering",
+    "href": "notebooks/stock-predictor/02_feature_engineering.html#notebook-2-feature-engineering",
+    "title": "Stock Return Predictor",
+    "section": "",
+    "text": "Project: Predicting whether a stock will outperform the S&P 500 over the next month\nAuthor: Romir Kapoor Date: April 2026\n\n\n\nTransform raw price data into meaningful features that capture momentum, trend, volatility, and relative performance. Then construct the target variable — whether a stock beat the S&P 500 the following month.\n\n\n\n\nImports & Setup\nLoad Price Data\nCalculate Monthly Returns\nBuild Features\nBuild Target Variable\nCombine & Clean\nSave to Disk"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/02_feature_engineering.html#imports-setup",
+    "href": "notebooks/stock-predictor/02_feature_engineering.html#imports-setup",
+    "title": "Stock Return Predictor",
+    "section": "1. Imports & Setup",
+    "text": "1. Imports & Setup"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/02_feature_engineering.html#load-price-data",
+    "href": "notebooks/stock-predictor/02_feature_engineering.html#load-price-data",
+    "title": "Stock Return Predictor",
+    "section": "2. Load Price Data",
+    "text": "2. Load Price Data\n\n\nLoaded prices — shape: (1760, 20)\n\n\n\n\n\n\n\n\n\nAAPL\nABT\nAMZN\nBAC\nC\nCOP\nCVX\nEOG\nGOOGL\nGS\nJNJ\nJPM\nMETA\nMRK\nMSFT\nPFE\nSLB\nUNH\nWFC\nXOM\n\n\nDate\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2018-01-02\n40.304176\n50.506081\n59.450500\n24.637495\n56.579605\n42.354919\n89.452377\n80.424561\n53.220631\n213.144241\n110.764206\n85.901283\n180.007385\n41.593494\n78.870361\n23.830420\n54.936550\n193.090454\n48.653320\n58.580410\n\n\n2018-01-03\n40.297153\n50.617756\n60.209999\n24.555096\n56.754620\n43.135872\n90.104439\n81.623909\n54.128628\n211.160156\n111.822266\n85.988808\n183.232086\n41.534306\n79.237404\n24.006990\n56.366863\n195.115997\n49.027637\n59.730938\n\n\n2018-01-04\n40.484337\n50.531853\n60.479500\n24.876459\n57.454605\n43.633533\n89.823997\n81.638649\n54.338882\n214.111252\n111.814301\n87.220634\n182.894745\n42.207558\n79.934837\n24.059305\n57.765579\n195.962921\n49.640896\n59.813610\n\n\n2018-01-05\n40.945255\n50.677902\n61.457001\n24.991812\n57.378536\n43.549320\n89.676735\n82.536354\n55.059433\n213.019180\n112.737144\n86.660713\n185.395126\n42.163174\n80.925858\n24.105080\n58.160679\n199.699692\n49.975372\n59.765408\n\n\n2018-01-08\n40.793182\n50.531853\n62.343498\n24.818775\n56.708942\n43.993389\n90.118446\n82.933693\n55.253830\n209.926285\n112.880341\n86.788719\n186.813980\n41.919029\n81.008438\n23.836956\n59.108944\n196.233566\n49.409920\n60.034081"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/02_feature_engineering.html#calculate-monthly-returns",
+    "href": "notebooks/stock-predictor/02_feature_engineering.html#calculate-monthly-returns",
+    "title": "Stock Return Predictor",
+    "section": "3. Calculate Monthly Returns",
+    "text": "3. Calculate Monthly Returns\nResample daily prices to month-end, then compute month-over-month returns.\n\n\nMonthly prices shape: (84, 20)\n\n\n\n\n\n\n\n\n\nAAPL\nABT\nAMZN\nBAC\nC\nCOP\nCVX\nEOG\nGOOGL\nGS\nJNJ\nJPM\nMETA\nMRK\nMSFT\nPFE\nSLB\nUNH\nWFC\nXOM\n\n\nDate\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2018-01-31\n39.174084\n53.656605\n72.544502\n26.367886\n59.714462\n45.026993\n87.888809\n84.741737\n58.626446\n223.331711\n109.936829\n92.523941\n185.434814\n43.835201\n87.184082\n24.222792\n58.144863\n206.727982\n52.388531\n60.144329\n\n\n2018-02-28\n41.845169\n52.076954\n75.622498\n26.450291\n57.672401\n41.805431\n79.253578\n74.734840\n54.743546\n219.811966\n103.987442\n92.387978\n176.931549\n40.113834\n86.450424\n23.965387\n52.236538\n197.455856\n46.796371\n52.713753\n\n\n2018-03-31\n39.416027\n51.723038\n72.366997\n24.804379\n51.568272\n45.638802\n80.754814\n77.571854\n51.431911\n210.557327\n102.602325\n87.964546\n158.545807\n40.651192\n84.145569\n23.424170\n51.552143\n187.457855\n41.989346\n51.927299\n\n\n2018-04-30\n38.824017\n50.419434\n78.306503\n24.746485\n52.156536\n50.418995\n88.593773\n87.224403\n50.511524\n199.246155\n101.273247\n87.453926\n170.660736\n43.934921\n86.219925\n24.163389\n54.560280\n207.079605\n41.628819\n54.112682\n\n\n2018-05-31\n44.070076\n53.368439\n81.481003\n24.116787\n51.190571\n52.087902\n88.787727\n86.958672\n54.549160\n189.505646\n96.483139\n86.030914\n190.286728\n44.427479\n91.519638\n23.946074\n54.647816\n211.555725\n43.580868\n57.114780\n\n\n\n\n\n\n\n\n\nMonthly returns shape: (84, 20)\n\n\n\n\n\n\n\n\n\nAAPL\nABT\nAMZN\nBAC\nC\nCOP\nCVX\nEOG\nGOOGL\nGS\nJNJ\nJPM\nMETA\nMRK\nMSFT\nPFE\nSLB\nUNH\nWFC\nXOM\n\n\nDate\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2018-01-31\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\n\n\n2018-02-28\n0.068185\n-0.029440\n0.042429\n0.003125\n-0.034197\n-0.071547\n-0.098252\n-0.118087\n-0.066231\n-0.015760\n-0.054116\n-0.001469\n-0.045856\n-0.084894\n-0.008415\n-0.010627\n-0.101614\n-0.044852\n-0.106744\n-0.123546\n\n\n2018-03-31\n-0.058051\n-0.006796\n-0.043049\n-0.062227\n-0.105841\n0.091696\n0.018942\n0.037961\n-0.060494\n-0.042103\n-0.013320\n-0.047879\n-0.103914\n0.013396\n-0.026661\n-0.022583\n-0.013102\n-0.050634\n-0.102722\n-0.014919\n\n\n2018-04-30\n-0.015020\n-0.025204\n0.082075\n-0.002334\n0.011407\n0.104740\n0.097071\n0.124434\n-0.017895\n-0.053720\n-0.012954\n-0.005805\n0.076413\n0.080778\n0.024652\n0.031558\n0.058351\n0.104673\n-0.008586\n0.042085\n\n\n2018-05-31\n0.135124\n0.058489\n0.040539\n-0.025446\n-0.018521\n0.033101\n0.002189\n-0.003047\n0.079935\n-0.048887\n-0.047299\n-0.016272\n0.115000\n0.011211\n0.061467\n-0.008994\n0.001604\n0.021615\n0.046892\n0.055479"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/02_feature_engineering.html#build-features",
+    "href": "notebooks/stock-predictor/02_feature_engineering.html#build-features",
+    "title": "Stock Return Predictor",
+    "section": "4. Build Features",
+    "text": "4. Build Features\nMomentum, moving average ratios, and volatility for each stock.\n\n\nFeatures shape: (78, 120)\n\n\n\n\n\n\n\n\n\nAAPL_ret_1m\nAAPL_ret_3m\nAAPL_ret_6m\nAAPL_ma_ratio_20\nAAPL_ma_ratio_50\nAAPL_volatility\nABT_ret_1m\nABT_ret_3m\nABT_ret_6m\nABT_ma_ratio_20\n...\nWFC_ret_6m\nWFC_ma_ratio_20\nWFC_ma_ratio_50\nWFC_volatility\nXOM_ret_1m\nXOM_ret_3m\nXOM_ret_6m\nXOM_ma_ratio_20\nXOM_ma_ratio_50\nXOM_volatility\n\n\ndate\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2018-07-31\n0.016615\n0.081859\n0.145569\n-0.000934\n0.005789\n0.152962\n0.079256\n0.138022\n0.064213\n0.034452\n...\n-0.117276\n0.007120\n0.030355\n0.201682\n-0.003058\n0.072086\n-0.047215\n-0.011922\n-0.003367\n0.155567\n\n\n2018-08-31\n0.098266\n0.181668\n0.297952\n0.061912\n0.139644\n0.121025\n0.024682\n0.065214\n0.108141\n0.024752\n...\n0.039977\n-0.001907\n0.025242\n0.090618\n0.009936\n0.003928\n0.074008\n0.010195\n-0.003456\n0.140775\n\n\n2018-09-30\n0.003155\n0.210234\n0.350468\n0.015239\n0.059595\n0.225772\n0.094598\n0.208028\n0.254991\n0.067590\n...\n0.024256\n-0.056094\n-0.081397\n0.155354\n0.056018\n0.050598\n0.156592\n0.019192\n0.045613\n0.138768\n\n\n2018-10-31\n-0.056923\n0.055953\n0.199339\n-0.003106\n-0.010474\n0.344657\n-0.039097\n0.061221\n0.183769\n-0.000563\n...\n0.023078\n0.012016\n-0.026778\n0.276419\n-0.075102\n0.003764\n0.057449\n-0.021347\n-0.032039\n0.221113\n\n\n2018-11-30\n-0.193578\n-0.215260\n-0.069724\n-0.057841\n-0.141543\n0.444800\n0.055595\n0.107949\n0.184970\n0.045225\n...\n0.011368\n0.023437\n0.030923\n0.157908\n-0.004513\n0.000198\n0.005630\n0.006506\n-0.015383\n0.231889\n\n\n\n\n5 rows × 120 columns"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/02_feature_engineering.html#build-target-variable",
+    "href": "notebooks/stock-predictor/02_feature_engineering.html#build-target-variable",
+    "title": "Stock Return Predictor",
+    "section": "5. Build Target Variable",
+    "text": "5. Build Target Variable\nFor each stock and each month, did it outperform SPY the following month?\n1 = outperformed, 0 = underperformed.\n\n\n[*********************100%***********************]  1 of 1 completed\n\n\n\n\n\n\n\n\nTicker\nSPY\n\n\nDate\n\n\n\n\n\n2018-01-31\nNaN\n\n\n2018-02-28\n-0.036361\n\n\n2018-03-31\n-0.027411\n\n\n2018-04-30\n0.005168\n\n\n2018-05-31\n0.024309\n\n\n\n\n\n\n\n\n\nTarget shape: (77, 20)\n\n\n\n\n\n\n\n\n\nAAPL_target\nABT_target\nAMZN_target\nBAC_target\nC_target\nCOP_target\nCVX_target\nEOG_target\nGOOGL_target\nGS_target\nJNJ_target\nJPM_target\nMETA_target\nMRK_target\nMSFT_target\nPFE_target\nSLB_target\nUNH_target\nWFC_target\nXOM_target\n\n\ndate\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2018-07-31\n1\n0\n1\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n1\n1\n1\n0\n1\n0\n0\n\n\n2018-08-31\n0\n1\n0\n0\n1\n1\n1\n1\n0\n0\n1\n0\n0\n1\n1\n1\n0\n0\n0\n1\n\n\n2018-09-30\n1\n1\n0\n1\n0\n0\n0\n0\n0\n1\n1\n1\n0\n1\n1\n1\n0\n1\n1\n1\n\n\n2018-10-31\n0\n1\n1\n1\n0\n0\n1\n0\n0\n0\n1\n1\n0\n1\n1\n1\n0\n1\n1\n0\n\n\n2018-11-30\n0\n1\n0\n0\n0\n1\n1\n0\n1\n0\n0\n0\n1\n1\n1\n1\n0\n0\n0\n0"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/02_feature_engineering.html#combine-clean",
+    "href": "notebooks/stock-predictor/02_feature_engineering.html#combine-clean",
+    "title": "Stock Return Predictor",
+    "section": "6. Combine & Clean",
+    "text": "6. Combine & Clean\n\n\nCombined shape: (77, 140)\nAfter dropping NaNs: (77, 140)\nAverage % of months each stock beat SPY: 46.95%\nMin: 36.36%  Max: 61.04%"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/02_feature_engineering.html#save-to-disk",
+    "href": "notebooks/stock-predictor/02_feature_engineering.html#save-to-disk",
+    "title": "Stock Return Predictor",
+    "section": "7. Save to Disk",
+    "text": "7. Save to Disk\n\n\nSaved features.csv — shape: (77, 140)"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/01_data_collection.html",
+    "href": "notebooks/stock-predictor/01_data_collection.html",
+    "title": "Stock Return Predictor",
+    "section": "",
+    "text": "Project: Predicting whether a stock will outperform the S&P 500 over the next month\nAuthor: Romir Kapooryes Date: April 2026\n\n\n\nPull and store historical price data for a universe of 20 stocks across 4 sectors using the yfinance library. This data will feed into feature engineering in the next notebook.\n\n\n\n\nImports & setup\nDefine stock universe & parameters\nPull historical price data\nSanity checks & visualization\nSave to disk"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/01_data_collection.html#notebook-1-data-collection",
+    "href": "notebooks/stock-predictor/01_data_collection.html#notebook-1-data-collection",
+    "title": "Stock Return Predictor",
+    "section": "",
+    "text": "Project: Predicting whether a stock will outperform the S&P 500 over the next month\nAuthor: Romir Kapooryes Date: April 2026\n\n\n\nPull and store historical price data for a universe of 20 stocks across 4 sectors using the yfinance library. This data will feed into feature engineering in the next notebook.\n\n\n\n\nImports & setup\nDefine stock universe & parameters\nPull historical price data\nSanity checks & visualization\nSave to disk"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/01_data_collection.html#imports-and-setup",
+    "href": "notebooks/stock-predictor/01_data_collection.html#imports-and-setup",
+    "title": "Stock Return Predictor",
+    "section": "1. Imports and Setup",
+    "text": "1. Imports and Setup"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/01_data_collection.html#define-stock-universe-parameters",
+    "href": "notebooks/stock-predictor/01_data_collection.html#define-stock-universe-parameters",
+    "title": "Stock Return Predictor",
+    "section": "2. Define Stock Universe & Parameters",
+    "text": "2. Define Stock Universe & Parameters\n20 stocks across 4 sectors: Technology, Finance, Energy, Healthcare\n\n\nTickers: 20 stocks\nDate range: 2018-01-01 to 2024-12-31"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/01_data_collection.html#pull-historical-price-data",
+    "href": "notebooks/stock-predictor/01_data_collection.html#pull-historical-price-data",
+    "title": "Stock Return Predictor",
+    "section": "3. Pull Historical Price Data",
+    "text": "3. Pull Historical Price Data\n\n\n[*********************100%***********************]  20 of 20 completed\n\n\nRaw data shape: (1760, 100)\n\n\n\n\n\n\n\n\nPrice\nClose\n...\nVolume\n\n\nTicker\nAAPL\nABT\nAMZN\nBAC\nC\nCOP\nCVX\nEOG\nGOOGL\nGS\n...\nJNJ\nJPM\nMETA\nMRK\nMSFT\nPFE\nSLB\nUNH\nWFC\nXOM\n\n\nDate\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2018-01-02\n40.304161\n50.506084\n59.450500\n24.637491\n56.579605\n42.354923\n89.452370\n81.049004\n53.220631\n213.144241\n...\n6842100\n13578800\n18151900\n10556504\n22483800\n17059833\n8678200\n3485000\n13819300\n11469300\n\n\n2018-01-03\n40.297153\n50.617767\n60.209999\n24.555094\n56.754597\n43.135864\n90.104431\n82.257683\n54.128620\n211.160110\n...\n5350500\n11901000\n16886600\n11090460\n26061400\n14183151\n9529200\n2417600\n14203700\n13957700\n\n\n2018-01-04\n40.484333\n50.531860\n60.479500\n24.876457\n57.454609\n43.633541\n89.823982\n82.272530\n54.338886\n214.111267\n...\n4837600\n12953700\n13880900\n15751650\n21912000\n13046517\n12252300\n2749100\n18740500\n10863000\n\n\n2018-01-05\n40.945255\n50.677898\n61.457001\n24.991814\n57.378548\n43.549332\n89.676727\n83.177177\n55.059437\n213.019226\n...\n6158800\n14155000\n13574500\n9955057\n23407100\n13167517\n8552700\n2432800\n14217900\n11047600\n\n\n2018-01-08\n40.793175\n50.531860\n62.343498\n24.818779\n56.708954\n43.993374\n90.118469\n83.577606\n55.253830\n209.926331\n...\n5129800\n12466500\n17994700\n11642546\n22113000\n19964341\n9778900\n2850800\n15569400\n10927100\n\n\n\n\n5 rows × 100 columns\n\n\n\n\n\nPrices shape: (1760, 20)\n\n\n\n\n\n\n\n\nTicker\nAAPL\nABT\nAMZN\nBAC\nC\nCOP\nCVX\nEOG\nGOOGL\nGS\nJNJ\nJPM\nMETA\nMRK\nMSFT\nPFE\nSLB\nUNH\nWFC\nXOM\n\n\nDate\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2018-01-02\n40.304161\n50.506084\n59.450500\n24.637491\n56.579605\n42.354923\n89.452370\n81.049004\n53.220631\n213.144241\n110.764168\n85.901276\n180.007385\n41.593510\n78.870354\n23.830416\n54.936558\n193.090469\n48.653316\n58.580433\n\n\n2018-01-03\n40.297153\n50.617767\n60.209999\n24.555094\n56.754597\n43.135864\n90.104431\n82.257683\n54.128620\n211.160110\n111.822273\n85.988785\n183.232086\n41.534309\n79.237404\n24.006989\n56.366863\n195.116043\n49.027637\n59.730953\n\n\n2018-01-04\n40.484333\n50.531860\n60.479500\n24.876457\n57.454609\n43.633541\n89.823982\n82.272530\n54.338886\n214.111267\n111.814346\n87.220627\n182.894730\n42.207561\n79.934799\n24.059315\n57.765556\n195.962906\n49.640884\n59.813629\n\n\n2018-01-05\n40.945255\n50.677898\n61.457001\n24.991814\n57.378548\n43.549332\n89.676727\n83.177177\n55.059437\n213.019226\n112.737122\n86.660728\n185.395142\n42.163166\n80.925873\n24.105083\n58.160679\n199.699661\n49.975376\n59.765400\n\n\n2018-01-08\n40.793175\n50.531860\n62.343498\n24.818779\n56.708954\n43.993374\n90.118469\n83.577606\n55.253830\n209.926331\n112.880310\n86.788704\n186.813995\n41.919025\n81.008430\n23.836954\n59.108948\n196.233521\n49.409927\n60.034077"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/01_data_collection.html#checks-visualization",
+    "href": "notebooks/stock-predictor/01_data_collection.html#checks-visualization",
+    "title": "Stock Return Predictor",
+    "section": "4. Checks & Visualization",
+    "text": "4. Checks & Visualization\n\n\nMissing values per ticker:\nTicker\nAAPL     0\nABT      0\nAMZN     0\nBAC      0\nC        0\nCOP      0\nCVX      0\nEOG      0\nGOOGL    0\nGS       0\nJNJ      0\nJPM      0\nMETA     0\nMRK      0\nMSFT     0\nPFE      0\nSLB      0\nUNH      0\nWFC      0\nXOM      0\ndtype: int64\n\n\n\n\nFirst date: 2018-01-02 00:00:00\nLast date:  2024-12-30 00:00:00\nTotal trading days: 1760"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/01_data_collection.html#save-to-disk",
+    "href": "notebooks/stock-predictor/01_data_collection.html#save-to-disk",
+    "title": "Stock Return Predictor",
+    "section": "5. Save to Disk",
+    "text": "5. Save to Disk\n\n\nSaved prices.csv — shape: (1760, 20)"
+  },
+  {
+    "objectID": "notebooks/stock-predictor/05_options_pricing.html",
+    "href": "notebooks/stock-predictor/05_options_pricing.html",
+    "title": "05 - Options Pricing",
+    "section": "",
+    "text": "This notebook takes the Ridge model’s latest top stock picks and prices one-month call options on them using Black-Scholes and a Cox-Ross-Rubinstein binomial tree."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/05_options_pricing.html#workflow",
+    "href": "notebooks/stock-predictor/05_options_pricing.html#workflow",
+    "title": "05 - Options Pricing",
+    "section": "Workflow",
+    "text": "Workflow\n\nLoad daily prices and engineered monthly features.\nRebuild the long-format model dataset used by the Ridge classifier.\nTrain on all months before the latest feature month and score the latest month.\nPull the one-month Treasury yield from FRED as the risk-free rate.\nPrice 30-day call options with Black-Scholes and a binomial tree.\nCompare the two prices and visualize the spread."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/05_options_pricing.html#recreate-the-ridge-top-picks",
+    "href": "notebooks/stock-predictor/05_options_pricing.html#recreate-the-ridge-top-picks",
+    "title": "05 - Options Pricing",
+    "section": "Recreate the Ridge top picks",
+    "text": "Recreate the Ridge top picks\nThe option pricing notebook uses the same six engineered factors as the modeling and backtesting notebooks. To avoid training on the target attached to the latest month, the model trains on months strictly before the latest feature date, then scores the latest month."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/05_options_pricing.html#pull-the-risk-free-rate-from-fred",
+    "href": "notebooks/stock-predictor/05_options_pricing.html#pull-the-risk-free-rate-from-fred",
+    "title": "05 - Options Pricing",
+    "section": "Pull the risk-free rate from FRED",
+    "text": "Pull the risk-free rate from FRED\nFRED publishes Treasury yields as percentages. This notebook uses DGS1MO, the one-month Treasury constant maturity rate, because the option maturity below is set to 30 days. If the FRED request fails, the notebook falls back to a clearly marked manual rate so the rest of the analysis can still run offline."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/05_options_pricing.html#pricing-functions",
+    "href": "notebooks/stock-predictor/05_options_pricing.html#pricing-functions",
+    "title": "05 - Options Pricing",
+    "section": "Pricing functions",
+    "text": "Pricing functions\nThe Black-Scholes implementation prices European calls. The binomial tree below is also configured for European calls so the comparison is apples-to-apples. For non-dividend-paying European calls, the binomial price should converge toward Black-Scholes as the number of steps rises."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/05_options_pricing.html#build-option-inputs",
+    "href": "notebooks/stock-predictor/05_options_pricing.html#build-option-inputs",
+    "title": "05 - Options Pricing",
+    "section": "Build option inputs",
+    "text": "Build option inputs\nThis baseline prices at-the-money calls using each selected stock’s latest adjusted close as both spot and strike. Volatility comes from the latest engineered feature row, where it was already annualized in Notebook 2."
+  },
+  {
+    "objectID": "notebooks/stock-predictor/05_options_pricing.html#interpretation",
+    "href": "notebooks/stock-predictor/05_options_pricing.html#interpretation",
+    "title": "05 - Options Pricing",
+    "section": "Interpretation",
+    "text": "Interpretation\n\nThe two prices should usually be close because both methods price the same European call under the same assumptions.\nThe binomial tree is discrete, so the gap versus Black-Scholes depends on the number of steps. Increasing BINOMIAL_STEPS should generally shrink the difference.\nThis is a theoretical premium estimate, not a tradable options quote. Real option chains include bid-ask spreads, discrete strikes, dividends, early exercise considerations, transaction costs, and implied volatility rather than historical realized volatility.\nThe model picks inherit the same limitations as the earlier notebooks: small sample size, survivorship bias, and no transaction costs."
+  },
+  {
+    "objectID": "notebooks/moodmate/randomForest.html",
+    "href": "notebooks/moodmate/randomForest.html",
+    "title": "MoodMate: Random Forest Feature Experiments",
+    "section": "",
+    "text": "This notebook is a collaborative MoodMate project experiment comparing Random Forest emotion classification with bag-of-words counts and TF-IDF features. The six labels are sadness (0), joy (1), love (2), anger (3), fear (4), and surprise (5)."
+  },
+  {
+    "objectID": "notebooks/moodmate/randomForest.html#training-label-distribution",
+    "href": "notebooks/moodmate/randomForest.html#training-label-distribution",
+    "title": "MoodMate: Random Forest Feature Experiments",
+    "section": "Training label distribution",
+    "text": "Training label distribution"
+  },
+  {
+    "objectID": "notebooks/moodmate/randomForest.html#shared-train-validation-and-test-splits",
+    "href": "notebooks/moodmate/randomForest.html#shared-train-validation-and-test-splits",
+    "title": "MoodMate: Random Forest Feature Experiments",
+    "section": "Shared train, validation, and test splits",
+    "text": "Shared train, validation, and test splits\nThe original project provides predefined splits. Both experiments use the same splits without creating a second random partition."
+  },
+  {
+    "objectID": "notebooks/moodmate/randomForest.html#random-forest-with-countvectorizer",
+    "href": "notebooks/moodmate/randomForest.html#random-forest-with-countvectorizer",
+    "title": "MoodMate: Random Forest Feature Experiments",
+    "section": "Random Forest with CountVectorizer",
+    "text": "Random Forest with CountVectorizer\nBag-of-words features represent token counts. Fit the vocabulary only on training data and retain the original 100-tree model and random seed.\n\n\nValidation Accuracy of Random Forest Classifier: 0.88\nTest Accuracy of Random Forest Classifier: 0.87\n\n\nOriginal saved results: 0.88 validation accuracy and 0.87 test accuracy (rounded to two decimal places)."
+  },
+  {
+    "objectID": "notebooks/moodmate/randomForest.html#random-forest-with-tf-idf",
+    "href": "notebooks/moodmate/randomForest.html#random-forest-with-tf-idf",
+    "title": "MoodMate: Random Forest Feature Experiments",
+    "section": "Random Forest with TF-IDF",
+    "text": "Random Forest with TF-IDF\nRepeat the same model configuration with TF-IDF features. Unlike the main MoodMate notebook, this original experiment used default TfidfVectorizer() settings, without English stop-word removal. The results are therefore not directly controlled comparisons against the main notebook.\n\n\nValidation Accuracy of Random Forest Classifier: 0.87\nTest Accuracy of Random Forest Classifier: 0.86\n\n\nOriginal saved results: 0.87 validation accuracy and 0.86 test accuracy (rounded to two decimal places)."
+  },
+  {
+    "objectID": "notebooks/moodmate/randomForest.html#most-frequent-training-tokens",
+    "href": "notebooks/moodmate/randomForest.html#most-frequent-training-tokens",
+    "title": "MoodMate: Random Forest Feature Experiments",
+    "section": "Most frequent training tokens",
+    "text": "Most frequent training tokens\nDisplay the most common terms in the CountVectorizer training matrix. This repairs the original cell, which referenced undefined X and vectorizer variables. Frequencies are token counts, not TF-IDF weights."
+  },
+  {
+    "objectID": "notebooks/moodmate/randomForest.html#interpretation-and-limitations",
+    "href": "notebooks/moodmate/randomForest.html#interpretation-and-limitations",
+    "title": "MoodMate: Random Forest Feature Experiments",
+    "section": "Interpretation and limitations",
+    "text": "Interpretation and limitations\nThe saved results favor CountVectorizer over TF-IDF for this Random Forest setup, but the differences are small and only reported to two decimal places."
   }
 ]
