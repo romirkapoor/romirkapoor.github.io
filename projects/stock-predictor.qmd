@@ -1,0 +1,64 @@
+---
+title: "Stock Return Prediction & Options Pricing"
+toc: true
+---
+
+## Stock Return Prediction & Options Pricing
+
+**Tools:** Python, pandas, scikit-learn, XGBoost, yfinance  
+**Type:** Independent Machine Learning & Quantitative Finance Project
+
+Developed an end-to-end machine learning pipeline to predict whether individual stocks would outperform the S&P 500 (SPY) over the following month.
+
+Analyzed historical price data from 20 stocks across four sectors between 2018 and 2024.
+
+### Methodology
+
+- **Feature Engineering:** Created momentum, moving-average, and volatility indicators from historical stock prices.
+- **Machine Learning:** Trained and evaluated Logistic Regression, Ridge Classifier, and XGBoost models using a chronological train-test split.
+- **Backtesting:** Simulated a rolling stock-selection strategy that ranked stocks and selected the top five for an equally weighted portfolio.
+- **Options Pricing:** Implemented Black-Scholes and Cox-Ross-Rubinstein binomial tree models to estimate theoretical European call option prices.
+
+### Model Performance
+
+| Model | Test Accuracy | AUC |
+|---|---:|---:|
+| Logistic Regression | 51.9% | 0.470 |
+| Ridge Classifier | 52.5% | — |
+| XGBoost | 50.0% | 0.493 |
+
+The models performed near random classification accuracy, highlighting the difficulty of predicting short-term stock returns using historical price indicators alone.
+
+### Historical Backtesting Results
+
+| Metric | Strategy | S&P 500 (SPY) |
+|---|---:|---:|
+| Total Return | 238.45% | 96.35% |
+| Annualized Return | 32.49% | 16.85% |
+| Sharpe Ratio | 1.275 | 1.035 |
+| Maximum Drawdown | -17.73% | -23.93% |
+
+*Backtest period: 2020–2024. These are exploratory results, not evidence of a reliable trading advantage. The analysis is subject to survivorship bias, a limited stock universe, and omitted transaction costs.*
+
+### Key Takeaways
+
+This project provided hands-on experience with financial data pipelines, feature engineering, machine learning model evaluation, rolling-window backtesting, and derivatives pricing.
+
+It also reinforced the importance of evaluating predictive performance separately from simulated investment returns.
+
+
+### Future Improvements
+
+Currently exploring an expanded modeling approach using a larger S&P 500 stock universe, additional technical indicators, and comparisons between linear and nonlinear regression models.
+
+
+### View the Code
+
+Explore the Python notebooks used to develop this project:
+
+- [Data Collection](notebooks/stock-predictor/01_data_collection.ipynb)
+- [Feature Engineering](notebooks/stock-predictor/02_feature_engineering.ipynb)
+- [Machine Learning Models](notebooks/stock-predictor/03_modeling.ipynb)
+- [Backtesting](notebooks/stock-predictor/04_backtesting.ipynb)
+- [Options Pricing](notebooks/stock-predictor/05_options_pricing.ipynb)
+

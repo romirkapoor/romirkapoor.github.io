@@ -1,0 +1,15 @@
+---
+title: "Resume"
+toc: false
+code-tools: false
+---
+
+You can view my resume below or download a PDF copy.
+
+[Download Resume](files/Romir_Kapoor_Resume.pdf){.btn .btn-primary download="Romir_Kapoor_Resume.pdf"}
+
+::: {style="margin-top: 2rem;"}
+<iframe src="files/Romir_Kapoor_Resume.pdf" width="100%" height="900px" style="border: 1px solid #ddd; border-radius: 6px;">
+
+</iframe>
+:::

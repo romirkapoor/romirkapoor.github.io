@@ -1,9 +1,171 @@
+
 ---
-title: "About"
+title: "About Me"
+toc: false
+code-tools: false
 ---
 
-About this site
+## Background
 
-```{r}
-1 + 1
+I'm a senior at the **University of California, Los Angeles**, pursuing degrees in **Mathematics/Economics** and **Statistics & Data Science**, with an expected graduation date of June 2027.
+
+I'm interested in how quantitative analysis can inform business decisions. Whether it's building a data pipeline, evaluating a machine learning model, or working through a business problem, I enjoy finding ways to turn complex information into practical insights.
+
+My experiences have taken me across consulting, data analytics, software engineering, and entrepreneurship, giving me opportunities to approach problems from both technical and business perspectives.
+
+
+## Career Timeline
+
+```{=html}
+<div class="career-timeline">
+
+  <div class="timeline-item">
+    <div class="timeline-card">
+      <span class="timeline-date">Fall 2027</span>
+      <h3>Incoming Management Consulting Analyst · Accenture</h3>
+      <p>Returning to Accenture's Sourcing & Procurement practice following graduation.</p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-card">
+      <span class="timeline-date">Jun – Aug 2026</span>
+      <h3>Management Consulting Analyst · Accenture</h3>
+      <p>Developed a Python/Flask analytics platform and analyzed enterprise transportation data to identify procurement savings opportunities.</p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-card">
+      <span class="timeline-date">Jun – Sep 2025</span>
+      <h3>Data Analyst Intern · Quicklly</h3>
+      <p>Built automated reporting and data pipelines to improve operational visibility and support business decisions.</p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-card">
+      <span class="timeline-date">Jun – Sep 2024</span>
+      <h3>Marketing Research & Outreach Analyst · Archway</h3>
+      <p>Conducted market research and supported business development initiatives across retail and logistics.</p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-card">
+      <span class="timeline-date">Dec 2020 – Aug 2024</span>
+      <h3>Co-founder · Mirchi Designs</h3>
+      <p>Co-founded a marketing business serving local businesses and nonprofits through digital and print campaigns.</p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-card">
+      <span class="timeline-date">Jun – Aug 2022</span>
+      <h3>Software Engineering Intern · Vitu</h3>
+      <p>Worked on AI-powered document processing and API integrations for dealership software.</p>
+    </div>
+  </div>
+
+</div>
 ```
+
+## Leadership & Involvement
+
+Outside of my professional experience, I'm involved in **Bruin Catalyst Consulting**, a student-led consulting organization at UCLA that I helped establish.
+
+As Founder, President, and Project Lead, I've worked on building the organization, recruiting and developing members, and leading consulting engagements for startups and small businesses.
+
+It's been an opportunity to combine my interests in business strategy, analytics, and team leadership while working with other students.
+
+
+## Skills & Tools
+
+```{=html}
+<h3>Programming Languages</h3>
+<div class="skill-tags">
+  <span class="skill-tag">Python</span>
+  <span class="skill-tag">R</span>
+  <span class="skill-tag">SQL</span>
+  <span class="skill-tag">C++</span>
+  <span class="skill-tag">Java</span>
+</div>
+
+<h3>Data & Development Tools</h3>
+<div class="skill-tags">
+  <span class="skill-tag">pandas / NumPy</span>
+  <span class="skill-tag">scikit-learn</span>
+  <span class="skill-tag">Tableau</span>
+  <span class="skill-tag">Excel</span>
+  <span class="skill-tag">Flask</span>
+  <span class="skill-tag">Git</span>
+  <span class="skill-tag">REST APIs</span>
+  <span class="skill-tag">Postman</span>
+</div>
+
+<h3>Methods & Techniques</h3>
+<div class="skill-tags">
+  <span class="skill-tag">Regression</span>
+  <span class="skill-tag">Classification</span>
+  <span class="skill-tag">Predictive Modeling</span>
+  <span class="skill-tag">PCA</span>
+  <span class="skill-tag">NLP</span>
+  <span class="skill-tag">Data Pipelines</span>
+  <span class="skill-tag">Statistical Analysis</span>
+</div>
+```
+
+
+## Certifications & Recognition
+
+```{=html}
+<div class="cert-grid">
+
+  <div class="cert-card">
+    <div class="cert-icon">✦</div>
+    <div class="cert-info">
+      <span class="cert-year">2025</span>
+      <h3>Lean Six Sigma Green Belt</h3>
+      <p>USC Marshall School of Business</p>
+    </div>
+  </div>
+
+  <div class="cert-card">
+    <div class="cert-icon">⌘</div>
+    <div class="cert-info">
+      <span class="cert-year">2025</span>
+      <h3>Python for Data Science, AI & Development</h3>
+      <p>IBM</p>
+    </div>
+  </div>
+
+  <div class="cert-card">
+    <div class="cert-icon">★</div>
+    <div class="cert-info">
+      <span class="cert-year">Academic Recognition</span>
+      <h3>Dean's Honors List</h3>
+      <p>University of California, Los Angeles</p>
+    </div>
+  </div>
+
+  <div class="cert-card">
+    <div class="cert-icon">★</div>
+    <div class="cert-info">
+      <span class="cert-year">2023</span>
+      <h3>Valedictorian</h3>
+      <p>Westlake High School</p>
+    </div>
+  </div>
+
+</div>
+```
+
+## Beyond Work & Academics
+
+I'm particularly interested in the intersection of economics, technology, and business strategy. I enjoy exploring new analytical tools, learning about different industries, and finding practical applications for what I study.
+
+Outside of school and work, I enjoy staying active through weightlifting, pickleball, and hiking. I'm also a big fan of movies, traveling, and exploring new places.
+
+---
+
+[View My Resume](resume.qmd){.btn .btn-primary} [Explore My Projects](projects.qmd){.btn .btn-outline-primary}

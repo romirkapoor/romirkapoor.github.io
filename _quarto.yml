@@ -1,26 +1,42 @@
 project:
   type: website
-  output-dir: docs
 
 website:
-  title: "romir_kapoor"
+  title: "Romir Kapoor"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
-      - href: second_page.qmd
-        text: Code
+      - href: about.qmd
+        text: About
+      - href: projects.qmd
+        text: Projects
+      - href: resume.qmd
+        text: Resume
+      - text: Contact
+        href: index.qmd#get-in-touch
+    right:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/romir-kapoor/
+        aria-label: LinkedIn
+      - icon: github
+        href: https://github.com/romirkapoor
+        aria-label: GitHub
+  page-footer:
+    center: "© 2026 Romir Kapoor"
 
+    
 format:
   html:
-    theme:
-      - lux
-      - brand
+    theme: litera
     css: styles.css
     toc: true
-    code-fold: true
-    code-tools: true
+    code-tools: false
+    code-fold: false
+    echo: false
 
 editor: visual
+
+execute:
+  enabled: false
 

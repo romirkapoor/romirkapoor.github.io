@@ -1,0 +1,38 @@
+---
+title: "MoodMate Emotion Classification"
+toc: true
+---
+
+## MoodMate: Emotion Classification Using NLP
+
+**Tools:** Python, scikit-learn, pandas, NLTK, TF-IDF  
+**Type:** Collaborative Machine Learning Project
+
+Collaborated on the development of a natural language processing (NLP) pipeline to classify written text into six emotions: sadness, joy, love, anger, fear, and surprise.
+
+### Methodology
+
+- **Data Preprocessing:** Cleaned and prepared text data for machine learning.
+- **Feature Engineering:** Applied text vectorization techniques, including TF-IDF and CountVectorizer.
+- **Model Development:** Trained and compared Logistic Regression, Naive Bayes, and Random Forest classifiers.
+- **Evaluation:** Assessed model performance using accuracy, precision, recall, and F1-score.
+
+### Model Performance
+
+| Model | Validation Accuracy |
+|---|---:|
+| Logistic Regression | 87.45% |
+| Naive Bayes | 68.10% |
+| Random Forest | **89.85%** |
+
+Random Forest achieved the highest validation accuracy, demonstrating the effectiveness of ensemble learning for this multiclass text classification task.
+
+### Key Takeaways
+
+This project strengthened our experience with natural language processing, text feature extraction, supervised machine learning, and comparative model evaluation.
+
+
+### View the Code
+
+- [MoodMate: NLP & Model Comparison](notebooks/moodmate/MoodMate.ipynb)
+- [Random Forest Experiments](notebooks/moodmate/randomForest.ipynb)

@@ -1,0 +1,18 @@
+---
+title: "Dating App Analysis"
+toc: true
+---
+
+## Dating App User Behavior Analysis
+
+**Tools:** Tableau, Exploratory Data Analysis, Data Visualization
+
+Analyzed user behavior and preferences across three dating app datasets: OkCupid, Lovoo, and Kaggle.
+
+As part of a collaborative project, explored relationships between user demographics, dating preferences, lifestyle characteristics, and engagement metrics using data visualization and regression analysis.
+
+### Project Presentation
+
+[View Full Project Presentation](files/Dating%20App%20Project%20Presentation.pdf){.btn .btn-primary}
+
+<iframe src="files/Dating%20App%20Project%20Presentation.pdf" width="100%" height="650px" style="border: 1px solid #ddd; border-radius: 6px;"></iframe>

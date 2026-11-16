@@ -1,9 +1,74 @@
+
 ---
-title: "Romir Kapoor"
+title: "Home"
+title-block-banner: false
+title-block-style: none
+toc: false
+code-tools: false
+page-layout: article
 ---
 
-I am Romir Kapoor. I am a student at UCLA studying Mathematics/Economics and Statistics/Data Science.
+<style>
+#title-block-header {
+  display: none;
+}
+</style>
 
-```{r}
-1 + 1
-```
+::: {.home-hero}
+
+<div class="home-accent"></div>
+
+<p class="home-eyebrow">UCLA · MATHEMATICS/ECONOMICS · STATISTICS & DATA SCIENCE</p>
+
+# Romir Kapoor
+
+<p class="home-tagline">Exploring the intersection of data analytics, economics, and business strategy.</p>
+
+I'm a senior at the **University of California, Los Angeles**, double majoring in **Mathematics/Economics** and **Statistics & Data Science**, graduating in June 2027.
+
+Through my experience in consulting, data analytics, and student leadership, I enjoy combining quantitative analysis with strategic thinking to solve real-world problems. Following graduation, I'll be returning to **Accenture** as a Management Consulting Analyst in its Sourcing & Procurement practice in Fall 2027.
+
+[About Me](about.qmd){.btn .btn-primary} [View My Resume](resume.qmd){.btn .btn-outline-primary}
+
+:::
+
+---
+
+## Areas of Focus
+
+::: {.columns}
+
+::: {.column width="33%"}
+<span class="focus-number">01 / ANALYTICS</span>
+
+### Data Analytics
+
+Statistical modeling, predictive analytics, and data visualization using R, Python, and SQL.
+:::
+
+::: {.column width="33%"}
+<span class="focus-number">02 / STRATEGY</span>
+
+### Consulting
+
+Applying quantitative analysis and strategic thinking to business and operational challenges.
+:::
+
+::: {.column width="33%"}
+<span class="focus-number">03 / LEADERSHIP</span>
+
+### Leadership
+
+Leading collaborative teams and managing projects through Bruin Catalyst Consulting at UCLA.
+:::
+
+:::
+
+
+---
+
+## Get in Touch
+
+I'm always open to connecting about opportunities in consulting, data analytics, and related fields.
+
+[Email Me](mailto:romirtx@gmail.com){.btn .btn-primary} 
